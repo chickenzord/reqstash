@@ -1,14 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/chickenzord/reqstash/pkg/reqstash"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
+	"gopkg.in/yaml.v2"
 )
 
 func main() {
@@ -17,7 +18,9 @@ func main() {
 	if err := envconfig.Process("reqstash", &cfg); err != nil {
 		panic(err)
 	}
-	fmt.Println(cfg)
+	yaml.NewEncoder(os.Stdout).Encode(map[string]interface{}{
+		"config": cfg,
+	})
 
 	s := reqstash.MemoryStorage{
 		Capacity: 2,
